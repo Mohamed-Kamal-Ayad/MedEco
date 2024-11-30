@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('ordert_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('pharmacy_branch_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('order_number')->unique();
-            $table->boolean('is_completed')->default(false);
+            $table->foreignId('order_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('drug_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->integer('quantity');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('ordert_items');
     }
 };
