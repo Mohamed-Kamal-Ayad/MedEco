@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\User;
 use App\Models\Pharmacy;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-use App\Http\Controllers\Controller;
+use App\Http\Resources\PharmacyResource;
 use App\Http\Requests\Api\RegisterUserRequest;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class RegisterUserController extends Controller
 {
@@ -34,6 +36,14 @@ class RegisterUserController extends Controller
         // Login the user after registration
         Auth::login($user);
 
+        if ($validatedData['type'] === 'pharmacy') {
+            return response()->json([
+                'user' => null,
+                'pharmacy' => new PharmacyResource($user->pharmacy),
+                'token' => $token,
+                'message' => 'Login successful.',
+            ]);
+        }
         return response()->json([
             'message' => 'Registered successfully.',
             'token' => $token,

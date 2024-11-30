@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('pharmacy_branch_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('order_number')->unique();
+            $table->text('notes')->nullable();
             $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });

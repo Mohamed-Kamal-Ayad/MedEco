@@ -42,7 +42,7 @@ class LoginController extends Controller
             ]);
         } elseif ($user->type === 'pharmacy') {
             return response()->json([
-                'user' => new UserResource($user),
+                'user' => null,
                 'pharmacy' => new PharmacyResource($user->pharmacy),
                 'token' => $token,
                 'message' => 'Login successful.',

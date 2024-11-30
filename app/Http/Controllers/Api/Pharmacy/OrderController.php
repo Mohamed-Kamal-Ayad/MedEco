@@ -1,59 +1,72 @@
 <?php
 
-namespace App\Http\Controllers\Api\Pharmacy;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Pharmacy\Order\StoreOrderRequest;
-use App\Http\Requests\Api\Pharmacy\Order\UpdateOrderRequest;
-use App\Http\Resources\Pharmacy\OrderResource;
-use App\Models\Drug;
 use App\Models\Order;
+use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class PharmacyController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get all orders.
      */
-    public function index()
+    public function getAllOrders()
     {
-        $orders = Order::query()->whereRelation('drug.pharmacyBranch.pharmacy', 'user_id', auth()->id())->with('drug.user')->get();
-        return OrderResource::collection($orders);
+        $orders = Order::with('items')->get();
+        return response()->json($orders, 200);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Get a specific order by ID.
      */
-    public function store(StoreOrderRequest $request)
+    public function getOrderById($id)
     {
-        $drug = Drug::where('id', $request->drug_id)->first();
-        $drug->update(['pharmacy_branch_id' => $request->pharmacy_branch_id]);
-        Order::create($request->safe()->merge(['user_id' => $drug->user_id])->only(['drug_id', 'user_id']));
-        return response()->json(['message' => 'تم إضافة الطلب بنجاح'], 201);
+        $order = Order::with('items')->find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        return response()->json($order, 200);
     }
 
     /**
-     * Display the specified resource.
+     * Mark an order as completed.
      */
-    public function show(Order $order)
+    public function markOrderAsCompleted(Request $request, $id)
     {
-        //
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'is_completed' => 'required|boolean',
+            'notes' => 'nullable|string',
+        ]);
+
+        $order->update([
+            'is_completed' => $validated['is_completed'],
+            'notes' => $validated['notes'] ?? $order->notes,
+        ]);
+
+        return response()->json(['message' => 'Order marked as completed successfully.'], 200);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Cancel an order.
      */
-    public function update(UpdateOrderRequest $request, Order $order)
+    public function cancelOrder($id)
     {
-        //
-    }
+        $order = Order::find($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
         $order->delete();
 
-        return response()->json(['message' => 'تم حذف الطلب بنجاح']);
+        return response()->json(['message' => 'Order canceled successfully.'], 200);
     }
 }
