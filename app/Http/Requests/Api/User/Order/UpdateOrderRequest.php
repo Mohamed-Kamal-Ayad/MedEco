@@ -22,7 +22,10 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'drug_id' => ['required', 'exists:drugs,id'],
+            'order_items' => ['required', 'array'],
+            'order_items.*.drug_id' => ['required', 'exists:drugs,id'],
+            'order_items.*.quantity' => ['required', 'integer', 'min:1'],
+            'pharmacy_branch_id' => ['required', 'exists:pharmacy_branches,id'],
         ];
     }
 
