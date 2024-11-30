@@ -21,7 +21,6 @@ class PharmacyBranch extends Model
         'address',
         'commercial_registration_number',
         'tax_number',
-        'is_open',
         'lat',
         'lng',
         'pharmacy_id'

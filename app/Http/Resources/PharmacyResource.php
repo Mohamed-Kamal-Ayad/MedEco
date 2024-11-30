@@ -32,7 +32,6 @@ class PharmacyResource extends JsonResource
                             'phone' => $branch->phone,
                             'commercial_registration_number' => $branch->commercial_registration_number,
                             'tax_number' => $branch->tax_number,
-                            'is_open' => $branch->is_active,
                             'lat' => $branch->lat,
                             'lng' => $branch->lng,
                             'created_at' => $branch->created_at,

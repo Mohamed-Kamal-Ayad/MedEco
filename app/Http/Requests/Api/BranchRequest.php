@@ -24,7 +24,6 @@ class BranchRequest extends FormRequest
             'address' => ['required', 'string', 'max:255'],
             'commercial_registration_number' => ['required', 'string', 'max:100', 'unique:pharmacy_branches'],
             'tax_number' => ['required', 'string', 'max:100'],
-            'is_open' => ['boolean'],
             'lat' => ['nullable', 'numeric'],
             'lng' => ['nullable', 'numeric'],
             'pharmacy_id' => ['required', 'exists:pharmacies,id'],
