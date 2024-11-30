@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\Pharmacy;
+
+use App\Http\Controllers\Controller;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
 
-class PharmacyController extends Controller
+class OrderController extends Controller
 {
     /**
      * Get all orders.

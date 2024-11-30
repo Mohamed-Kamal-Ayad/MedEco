@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Pharmacy\OrderController as PharmacyOrderController
 use App\Http\Controllers\Api\Auth\RegisterUserController;
 use App\Http\Controllers\Api\Pharmacy\PharmacyController;
 use App\Http\Controllers\Api\Pharmacy\PharmacyBranchController;
+use App\Models\Order;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,8 +64,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('orders', [PharmacyOrderController::class, 'index'])->name('orders.index');
         Route::post('orders', [PharmacyOrderController::class, 'store'])->name('orders.store');
         Route::delete('orders/{order}', [PharmacyOrderController::class, 'destroy'])->name('orders.destroy');
-
-
     });
 });
 Route::post('/editor/upload', 'MediaController@editorUpload')->name('editor.upload');
