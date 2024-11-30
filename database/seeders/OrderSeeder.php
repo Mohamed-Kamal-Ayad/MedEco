@@ -16,7 +16,7 @@ class OrderSeeder extends Seeder
     public function run(): void
     {
         $orders = Order::create([
-            'user_id' => User::first()->id,
+            'user_id' => 24,
             'pharmacy_branch_id' => PharmacyBranch::first()->id,
             'order_number' => 'ORD-0001',
             'is_completed' => true,
