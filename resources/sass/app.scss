@@ -1,0 +1,24 @@
+@import "./variables";
+
+// Icons
+@import "./icons";
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+@import "~daterangepicker/daterangepicker.css";
+@import "~bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css";
+@import "~tailwind-color-palette/scss/tailwind-color-palette";
+@import "./icheck";
+@import "./fonts";
+@import "./frontend";
+
+.form-control.is-invalid, .was-validated .form-control:invalid {
+    border-color: $danger;
+    padding-left: calc(1.6em + 1rem);
+    padding-right: 1.2em;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23F96D74'%3E%3Ccircle cx='6' cy='6' r='4.5'/%3E%3Cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3E%3Ccircle cx='6' cy='8.2' r='.6' fill='%23F96D74' stroke='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left calc(0.4em + 0.25rem) center;
+    background-size: calc(0.8em + 0.5rem) calc(0.8em + 0.5rem);
+}

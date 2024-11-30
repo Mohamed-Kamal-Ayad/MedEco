@@ -1,0 +1,52 @@
+// Typography
+$font-family-sans-serif: 'DiodrumArabic', sans-serif;
+$font-size-base: 1rem;
+$line-height-base: 1.6;
+
+// Colors
+$blue: #3490dc;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66d9b;
+$red: #e3342f;
+$orange: #f6993f;
+$yellow: #ffed4a;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #6cb2eb;
+
+$primary: #135773;
+$secondary: $blue;
+$headings-color: #101B3A;
+$paragraphs-color: #777D8E;
+$pink: #F0C9C8;
+$pink-dark: #FBE2D9;
+$gray: #F0F1F6;
+$gray-light: #F7F8FA;
+$danger: #F96D74;
+$success: #7EDB8F;
+
+$twitter: #00ACEE;
+$instagram: #3F729B;
+$google: #EA4335;
+$facebook: #375BA6;
+$facebook: #4267B2;
+
+$body-bg: $gray-light;
+
+// Card
+$card-border-color: rgba($paragraphs-color, .3);
+$border-color: rgba($paragraphs-color, .3);
+
+//
+$btn-border-radius: 4rem;
+$btn-padding-y: .75rem;
+$btn-padding-x: 1.5rem;
+$btn-font-weight: 500;
+
+//
+$input-padding-y: .5rem;
+$input-padding-x: 1.2rem;
+
+
+$body-color: $paragraphs-color;
