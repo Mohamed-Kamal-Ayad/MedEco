@@ -15,14 +15,7 @@ class DrugController extends Controller
      */
     public function index()
     {
-        if (request()->has('my_drugs') && request()->my_drugs == 'true') {
-            $drugs = Drug::query()->whereRelation('pharmacyBranch.pharmacy', 'user_id', auth()->id())->with(['drugType', 'user'])->get();
-        } else {
-            $drugs = Drug::query()->where('is_donated', 0)
-                ->where('pharmacy_branch_id', null)
-                ->whereDoesntHave('order')
-                ->with(['drugType', 'user'])->get();
-        }
+        $drugs = Drug::with('drugType')->get();
         return DrugResource::collection($drugs);
     }
 
