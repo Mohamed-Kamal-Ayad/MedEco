@@ -61,9 +61,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/pharmacies/{id}', [PharmacyController::class, 'show']);
         Route::get('/branches', [PharmacyBranchController::class, 'index']);
 
-        Route::get('orders', [PharmacyOrderController::class, 'index'])->name('orders.index');
-        Route::post('orders', [PharmacyOrderController::class, 'store'])->name('orders.store');
-        Route::delete('orders/{order}', [PharmacyOrderController::class, 'destroy'])->name('orders.destroy');
+        Route::get('/orders', [PharmacyOrderController::class, 'getAllOrders']); // Get all orders
+        Route::get('/orders/{id}', [PharmacyOrderController::class, 'getOrderById']); // Get order by ID
+        Route::patch('/orders/{id}', [PharmacyOrderController::class, 'markOrderAsCompleted']); // Mark order as completed
+        Route::delete('/orders/{id}', [PharmacyOrderController::class, 'cancelOrder']); // Cancel order
     });
 });
 Route::post('/editor/upload', 'MediaController@editorUpload')->name('editor.upload');
