@@ -12,21 +12,9 @@ return new class extends Migration {
     {
         Schema::create('drugs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('drug_type_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
-            $table->foreignId('pharmacy_branch_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
-            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->string('name');
-            $table->text('description')->nullable();
-            $table->decimal('price', 10, 2);
-            $table->integer('qty');
-            $table->date('production_date');
-            $table->decimal('lat', 10, 8)->nullable();
-            $table->decimal('lng', 11, 8)->nullable();
-            $table->date('expiry_date');
-            $table->boolean('is_valid')->default(true);
-            $table->boolean('is_available')->default(true);
-            $table->boolean('is_expired')->default(false);
-            $table->boolean('is_donated')->default(false);
+            $table->double('points');
+            $table->foreignId('drug_type_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
