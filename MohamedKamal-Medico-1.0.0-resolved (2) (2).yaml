@@ -1,0 +1,579 @@
+openapi: 3.0.0
+info:
+  title: Warriors API
+  description: "API for managing drugs, orders, and network requests in the Warriors system."
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/MohamedKamal/Medico/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://lightsteelblue-jaguar-138143.hostingersite.com
+paths:
+  /user/drugs:
+    get:
+      summary: Get all drugs
+      responses:
+        "200":
+          description: A list of drugs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+  /user/orders:
+    get:
+      summary: Get all orders
+      responses:
+        "200":
+          description: A list of all orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_1'
+    post:
+      summary: Create a new order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user_orders_body'
+      responses:
+        "200":
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+  /user/orders/{id}:
+    get:
+      summary: Get a specific order
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: A specific order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+    put:
+      summary: Update an uncompleted order
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orders_id_body'
+      responses:
+        "200":
+          description: Order updated successfully
+    delete:
+      summary: Cancel an order
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Order canceled successfully
+  /pharmacy/network:
+    get:
+      summary: Get all network requests
+      responses:
+        "200":
+          description: A list of network requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_4'
+  /pharmacy/network/{id}:
+    put:
+      summary: Approve or reject a network request
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/network_id_body'
+      responses:
+        "200":
+          description: Network request updated successfully
+    delete:
+      summary: Delete a network request
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Network request deleted successfully
+  /pharmacy/requests:
+    get:
+      summary: Get my network requests
+      parameters:
+      - name: is_sender
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          enum:
+          - 0
+          - 1
+      responses:
+        "200":
+          description: A list of network requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_5'
+    post:
+      summary: Create a new network request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/pharmacy_requests_body'
+      responses:
+        "200":
+          description: Network request created successfully
+  /pharmacy/requests/{id}:
+    get:
+      summary: Get a specific request
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: A specific request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_6'
+    put:
+      summary: Edit a network request
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requests_id_body'
+      responses:
+        "200":
+          description: Request updated successfully
+    delete:
+      summary: Delete a network request
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Network request deleted successfully
+  /pharmacy/orders:
+    get:
+      summary: Get all pharmacy orders
+      description: Retrieve all orders placed by the pharmacy.
+      responses:
+        "200":
+          description: List of pharmacy orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200_7'
+  /pharmacy/orders/{id}:
+    get:
+      summary: Get a specific pharmacy order
+      description: Retrieve details of a specific pharmacy order.
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the order.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Pharmacy order details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_8'
+    put:
+      summary: Mark an order as completed
+      description: Update the order's status to completed.
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the order.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/orders_id_body_1'
+      responses:
+        "200":
+          description: Order marked as completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_9'
+    delete:
+      summary: Cancel a pharmacy order
+      description: Cancel an order by the pharmacy.
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the order.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Order canceled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_10'
+components:
+  schemas:
+    userdrugs_drug_type:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        unit:
+          type: string
+    inline_response_200:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        points:
+          type: integer
+        drug_type:
+          $ref: '#/components/schemas/userdrugs_drug_type'
+    userorders_drug:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        drug_type:
+          $ref: '#/components/schemas/userdrugs_drug_type'
+    userorders_order_items:
+      type: object
+      properties:
+        drug:
+          $ref: '#/components/schemas/userorders_drug'
+        quantity:
+          type: integer
+    inline_response_200_1:
+      type: object
+      properties:
+        id:
+          type: integer
+        order_number:
+          type: string
+        order_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/userorders_order_items'
+        points_earned:
+          type: integer
+        is_completed:
+          type: boolean
+    userorders_drugs_ids:
+      type: object
+      properties:
+        id:
+          type: integer
+        quantity:
+          type: integer
+    user_orders_body:
+      type: object
+      properties:
+        drugs_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/userorders_drugs_ids'
+        pharmacy_branch_id:
+          type: integer
+    inline_response_200_2:
+      type: object
+      properties:
+        order_number:
+          type: string
+        expected_points:
+          type: integer
+    inline_response_200_3:
+      type: object
+      properties:
+        id:
+          type: integer
+        order_number:
+          type: string
+        order_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/pharmacyorders_order_items'
+        points_earned:
+          type: integer
+        is_completed:
+          type: boolean
+    userordersid_order_items:
+      type: object
+      properties:
+        drug_id:
+          type: integer
+        quantity:
+          type: integer
+    orders_id_body:
+      type: object
+      properties:
+        order_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/userordersid_order_items'
+        pharmacy_branch_id:
+          type: integer
+    pharmacynetwork_sender_pharmacy_branch:
+      type: object
+      properties:
+        id:
+          type: integer
+        phone:
+          type: string
+        address:
+          type: string
+        lat:
+          type: number
+          format: float
+        lng:
+          type: number
+          format: float
+    pharmacynetwork_sender_pharmacy:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        hotline:
+          type: string
+        logo:
+          type: string
+        description:
+          type: string
+        is_approved:
+          type: boolean
+        is_completed:
+          type: boolean
+    pharmacynetwork_sender:
+      type: object
+      properties:
+        pharmacy_branch:
+          $ref: '#/components/schemas/pharmacynetwork_sender_pharmacy_branch'
+        pharmacy:
+          $ref: '#/components/schemas/pharmacynetwork_sender_pharmacy'
+    inline_response_200_4:
+      type: object
+      properties:
+        id:
+          type: integer
+        sender:
+          $ref: '#/components/schemas/pharmacynetwork_sender'
+        description:
+          type: string
+    network_id_body:
+      type: object
+      properties:
+        is_approved:
+          type: boolean
+    pharmacyrequests_receiver_pharmacy_branch:
+      type: object
+      properties:
+        id:
+          type: integer
+        phone:
+          type: string
+        address:
+          type: string
+    pharmacyrequests_receiver:
+      type: object
+      properties:
+        pharmacy_branch:
+          $ref: '#/components/schemas/pharmacyrequests_receiver_pharmacy_branch'
+    inline_response_200_5:
+      type: object
+      properties:
+        id:
+          type: integer
+        receiver:
+          $ref: '#/components/schemas/pharmacyrequests_receiver'
+        sender:
+          $ref: '#/components/schemas/pharmacyrequests_receiver'
+        description:
+          type: string
+    pharmacy_requests_body:
+      type: object
+      properties:
+        description:
+          type: string
+    inline_response_200_6:
+      type: object
+      properties:
+        id:
+          type: integer
+        description:
+          type: string
+        is_completed:
+          type: boolean
+        is_approved:
+          type: boolean
+    requests_id_body:
+      type: object
+      properties:
+        description:
+          type: string
+        is_completed:
+          type: boolean
+    pharmacyorders_drug:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    pharmacyorders_order_items:
+      type: object
+      properties:
+        drug:
+          $ref: '#/components/schemas/pharmacyorders_drug'
+        quantity:
+          type: integer
+    inline_response_200_7:
+      type: object
+      properties:
+        id:
+          type: integer
+        order_number:
+          type: string
+        order_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/pharmacyorders_order_items'
+        points_earned:
+          type: integer
+        is_completed:
+          type: boolean
+    inline_response_200_8:
+      type: object
+      properties:
+        id:
+          type: integer
+        order_number:
+          type: string
+        order_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/pharmacyorders_order_items'
+        points_earned:
+          type: integer
+        is_completed:
+          type: boolean
+        notes:
+          type: string
+        confirmed_by_admin:
+          type: string
+    orders_id_body_1:
+      type: object
+      properties:
+        is_completed:
+          type: boolean
+          example: true
+        notes:
+          type: string
+          description: Optional notes for the order.
+        points_earned:
+          type: integer
+          description: Adjust the points earned if needed.
+    inline_response_200_9:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Order marked as completed successfully.
+    inline_response_200_10:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Order canceled successfully.
