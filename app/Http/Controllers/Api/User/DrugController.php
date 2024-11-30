@@ -16,38 +16,14 @@ class DrugController extends Controller
      */
     public function index()
     {
-        if (request()->has('my_drugs') && request()->my_drugs == 'true') {
-            $drugs = auth()->user()->drugs()->with(['drugType', 'pharmacyBranch.pharmacy'])->get();
-        } else {
-            $drugs = Drug::query()
-                ->filter(request(['search']))
-                ->when(request()->has('is_donated') && request()->is_donated == 'true', function ($query) {
-                    $query->where('is_donated', 1);
-                })
-                ->where('pharmacy_branch_id', '!=', null)
-                ->whereDoesntHave('order')
-                ->with(['drugType', 'pharmacyBranch.pharmacy'])->get();
-        }
+        $drugs = Drug::with('drugType')->get();
         return DrugResource::collection($drugs);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDrugRequest $request)
-    {
-        $data = $request->is_donated ? $request->safe()->merge(['price' => 0])->except('images') : $request->safe()->merge(['pharmacy_branch_id' => null])->except('images');
-
-        $drug = auth()->user()->drugs()->create($data);
-
-        if ($request->has('images'))
-            $drug->addMultipleMediaFromRequest(['images'])
-                ->each(function ($fileAdder) {
-                    $fileAdder->usingFileName(md5(Str::random(40)))->toMediaCollection('images');
-                });
-
-        return response()->json(['message' => 'تم إضافة الدواء بنجاح'], 201);
-    }
+    public function store(StoreDrugRequest $request) {}
 
     /**
      * Display the specified resource.
