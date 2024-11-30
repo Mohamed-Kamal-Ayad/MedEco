@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Pharmacy;
 
+use App\Http\Resources\OrderItemResource;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,8 +18,12 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'drug' => DrugResource::make($this->drug),
-            'created_at' => $this->created_at,
+            'order_number' => $this->order_number,
+            'order_items' => OrderItemResource::collection($this->items),
+            'is_completed' => $this->is_completed,
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'user' => UserResource::make($this->user),
+            'points_earned' => $this->total,
         ];
     }
 }

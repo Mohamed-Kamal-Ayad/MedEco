@@ -24,10 +24,8 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        Order::query()->create([
-            'user_id' => auth()->id(),
-            'drug_id' => $request->drug_id,
-        ]);
+        $order = Order::query()->create(['pharmacy_branch_id' => $request->pharmacy_branch_id, 'user_id' => auth()->id()]);
+        $order->items()->createMany($request->drug_ids);
         return response()->json(['message' => 'تم إضافة الطلب بنجاح'], 201);
     }
 
@@ -36,7 +34,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        return new OrderResource($order);
     }
 
     /**
@@ -44,7 +42,8 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+        $order->update($request->validated());
+        return response()->json(['message' => 'تم تعديل الطلب بنجاح']);
     }
 
     /**

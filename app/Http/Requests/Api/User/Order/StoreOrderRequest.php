@@ -22,7 +22,10 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'drug_id' => ['required', 'exists:drugs,id'],
+            "pharmacy_branch_id" => ['required', 'exists:pharmacy_branches,id'],
+            "drug_ids" => ['required', 'array'],
+            "drug_ids.*.drug_id" => ['required', 'exists:drugs,id'],
+            "drug_ids.*.quantity" => ['required', 'integer', 'min:1'],
         ];
     }
 
@@ -34,7 +37,9 @@ class StoreOrderRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'drug_id' => 'الدواء',
+            'drug_ids' => 'الأدوية',
+            'quantities' => 'الكميات',
+            'pharmacy_branch_id' => 'فرع الصيدلية',
         ];
     }
 }
