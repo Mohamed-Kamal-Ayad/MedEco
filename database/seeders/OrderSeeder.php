@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Order;
+use App\Models\PharmacyBranch;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,8 +16,8 @@ class OrderSeeder extends Seeder
     public function run(): void
     {
         $orders = Order::create([
-            'user_id' => 24,
-            'pharmacy_branch_id' => 1,
+            'user_id' => User::first()->id,
+            'pharmacy_branch_id' => PharmacyBranch::first()->id,
             'order_number' => 'ORD-0001',
             'is_completed' => true,
         ]);
