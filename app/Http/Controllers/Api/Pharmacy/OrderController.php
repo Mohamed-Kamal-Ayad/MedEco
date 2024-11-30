@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Api\Pharmacy;
 
 use App\Http\Controllers\Controller;
-
+use App\Http\Resources\Pharmacy\OrderResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Phar;
 
 class OrderController extends Controller
 {
@@ -15,7 +16,7 @@ class OrderController extends Controller
     public function getAllOrders()
     {
         $orders = Order::with('items')->get();
-        return response()->json($orders, 200);
+        return OrderResource::collection($orders);
     }
 
     /**
@@ -28,8 +29,7 @@ class OrderController extends Controller
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
-
-        return response()->json($order, 200);
+        return OrderResource::collection($order);
     }
 
     /**
