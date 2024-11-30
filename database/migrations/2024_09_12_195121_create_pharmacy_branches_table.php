@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('pharmacy_branches', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('pharmacy_id')->references('id')->on('pharmacies')->cascadeOnDelete();
             $table->string('phone');
             $table->string('address');
             $table->string('commercial_registration_number');
             $table->string('tax_number');
-            $table->boolean('is_open')->default(true);
             $table->double('lat')->nullable();
             $table->double('lng')->nullable();
-            $table->foreignId('pharmacy_id')->references('id')->on('pharmacies')->cascadeOnDelete();
             $table->timestamps();
         });
     }
