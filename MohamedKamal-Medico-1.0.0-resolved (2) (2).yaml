@@ -6,7 +6,7 @@ info:
 servers:
 - url: https://virtserver.swaggerhub.com/MohamedKamal/Medico/1.0.0
   description: SwaggerHub API Auto Mocking
-- url: https://lightsteelblue-jaguar-138143.hostingersite.com
+- url: https://warriors.frevva.com
 paths:
   /user/drugs:
     get:
