@@ -27,7 +27,7 @@ class OrderController extends Controller
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
-        return OrderResource::make($order);
+        return OrderResource::make($order->load('items'));
     }
 
     /**
