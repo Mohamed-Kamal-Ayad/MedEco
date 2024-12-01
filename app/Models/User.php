@@ -119,10 +119,12 @@ class User extends Authenticatable implements HasMedia, NotificationTarget
     {
         return $this->hasOne(Pharmacy::class);
     }
+
     public function Branch()
     {
         return $this->hasMany(Branch::class);
     }
+
     public function dashboardProfile(): string
     {
         return '#';
@@ -306,5 +308,12 @@ class User extends Authenticatable implements HasMedia, NotificationTarget
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function getPointsAttribute()
+    {
+        return $this->orders->where('is_completed', 1)->each->items->sum(function ($item) {
+            return $item->quantity * $item->drug->points;
+        });
     }
 }
