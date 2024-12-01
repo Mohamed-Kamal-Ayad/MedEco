@@ -19,7 +19,7 @@ class OrderSeeder extends Seeder
             'user_id' => 24,
             'pharmacy_branch_id' => PharmacyBranch::first()->id,
             'order_number' => 'ORD-0001',
-            'is_completed' => true,
+            'is_completed' => false,
         ]);
 
         $orders->items()->create([
