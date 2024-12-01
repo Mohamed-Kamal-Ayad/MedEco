@@ -13,6 +13,11 @@ class Order extends Model
 
     protected $guarded = [];
 
+    public function getRouteKeyName()
+    {
+        return 'order_number';
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
