@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -51,11 +52,12 @@ class Order extends Model
         });
     }
 
-    public function setOrderNumberAttribute($value)
+    protected function orderNumber(): Attribute
     {
-        dd($value);
-        $this->attributes['order_number'] = Order::count() > 0
-            ? "ORD-" . Str::padLeft(Order::count() + 1, Str::length(Order::first()->order_code) - 3, '0')
-            : 'ORD-0001';
+        return Attribute::make(
+            set: fn($value) => Order::count() > 0
+                ? "ORD-" . Str::padLeft(Order::count() + 1, Str::length(Order::first()->order_code) - 3, '0')
+                : 'ORD-0001'
+        );
     }
 }
