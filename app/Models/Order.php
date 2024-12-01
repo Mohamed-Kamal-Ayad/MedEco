@@ -53,6 +53,7 @@ class Order extends Model
 
     public function setOrderNumberAttribute($value)
     {
+        dd($value);
         $this->attributes['order_number'] = Order::count() > 0
             ? "ORD-" . Str::padLeft(Order::count() + 1, Str::length(Order::first()->order_code) - 3, '0')
             : 'ORD-0001';
