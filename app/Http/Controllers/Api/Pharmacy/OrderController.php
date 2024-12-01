@@ -22,10 +22,8 @@ class OrderController extends Controller
     /**
      * Get a specific order by ID.
      */
-    public function getOrderById($id)
+    public function getOrderById(Order $order)
     {
-        $order = Order::with('items')->find($id);
-
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
