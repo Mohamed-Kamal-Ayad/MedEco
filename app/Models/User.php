@@ -312,8 +312,11 @@ class User extends Authenticatable implements HasMedia, NotificationTarget
 
     public function getPointsAttribute()
     {
-        return $this->orders->where('is_completed', 1)->each->items->sum(function ($item) {
-            return $item->quantity * $item->drug->points;
+        $p = $this->orders->where('is_completed', 1)->sum(function ($order) {
+            return $order->items->sum(function ($item) {
+                return $item->quantity * $item->drug->points;
+            });
         });
+        return $p;
     }
 }
