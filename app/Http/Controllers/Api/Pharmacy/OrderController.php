@@ -33,10 +33,8 @@ class OrderController extends Controller
     /**
      * Mark an order as completed.
      */
-    public function markOrderAsCompleted(Request $request, $id)
+    public function markOrderAsCompleted(Request $request, Order $order)
     {
-        $order = Order::find($id);
-
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
@@ -57,10 +55,8 @@ class OrderController extends Controller
     /**
      * Cancel an order.
      */
-    public function cancelOrder($id)
+    public function cancelOrder(Order $order)
     {
-        $order = Order::find($id);
-
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }

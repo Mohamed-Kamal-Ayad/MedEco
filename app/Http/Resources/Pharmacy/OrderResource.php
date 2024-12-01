@@ -21,7 +21,7 @@ class OrderResource extends JsonResource
             'order_number' => $this->order_number,
             'order_items' => OrderItemResource::collection($this->items),
             'is_completed' => $this->is_completed,
-            'created_at' => $this->created_at,
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'user' => UserResource::make($this->user),
             'points_earned' => $this->total,
         ];
