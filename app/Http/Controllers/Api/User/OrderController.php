@@ -29,7 +29,12 @@ class OrderController extends Controller
             ? "ORD-" . Str::padLeft(Order::count() + 1, Str::length(Order::first()->order_code) - 3, '0')
             : 'ORD-0001']);
         $order->items()->createMany($request->drug_ids);
-        return response()->json(['message' => 'تم إضافة الطلب بنجاح'], 201);
+        return response()->json(['message' => 'تم إضافة الطلب بنجاح',
+            'order_number' => $order->order_number,
+            'expected_points' => $order->items->sum(function ($item) {
+                return $item->quantity * $item->drug->points;
+            })
+            ], 201);
     }
 
     /**
