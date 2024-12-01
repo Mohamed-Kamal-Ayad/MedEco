@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
         Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
         Route::get('points', function (){
-            return response(['points' => auth()->user()->points]);
+            return response()->json(['points' => auth()->user()->points]);
         });
     });
     Route::as('pharmacy.')->prefix('pharmacy')->group(function () {
