@@ -50,6 +50,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
         Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
         Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+        Route::get('points', function (){
+            return response(['points' => auth()->user()->points]);
+        });
     });
     Route::as('pharmacy.')->prefix('pharmacy')->group(function () {
         Route::get('drug-types', [DrugTypeController::class, 'index'])->name('drugs.types');
