@@ -7,6 +7,7 @@ use App\Http\Requests\Api\User\Order\StoreOrderRequest;
 use App\Http\Requests\Api\User\Order\UpdateOrderRequest;
 use App\Http\Resources\User\OrderResource;
 use App\Models\Order;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -24,7 +25,9 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        $order = Order::query()->create(['pharmacy_branch_id' => $request->pharmacy_branch_id, 'user_id' => auth()->id()]);
+        $order = Order::query()->create(['pharmacy_branch_id' => $request->pharmacy_branch_id, 'user_id' => auth()->id(), 'order_number' => Order::count() > 0
+            ? "ORD-" . Str::padLeft(Order::count() + 1, Str::length(Order::first()->order_code) - 3, '0')
+            : 'ORD-0001']);
         $order->items()->createMany($request->drug_ids);
         return response()->json(['message' => 'تم إضافة الطلب بنجاح'], 201);
     }
