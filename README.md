@@ -1,6 +1,7 @@
-# Shifak Laravel
+# MedEco
 
-Shifak is a mobile application designed to address two major healthcare challenges in Egypt: medication waste and the environmental impact of improper drug disposal. By redistributing unused, unexpired medications and providing a platform for their safe disposal, Shifak aims to prevent these medications from going to waste and reduce the harmful effects of improper disposal, such as incineration.
+MedEco is a mobile application designed to address two major healthcare challenges in Egypt: medication waste and the environmental impact of improper drug disposal. By redistributing unused, unexpired medications and providing a platform for their safe disposal, MedEco aims to prevent these medications from going to waste and reduce the harmful effects of improper disposal, such as incineration.
+
 ## Requirements
 
 - **PHP**: ^8.2
