@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreNetworkRequest;
-use App\Http\Requests\UpdateNetworkRequest;
 use App\Http\Resources\PharmacyBranchResource;
 use App\Http\Resources\PharmacyResource;
 use App\Models\Network;
-use Request;
+use Illuminate\Http\Request;
 
 class NetworkController extends Controller
 {
@@ -33,7 +31,7 @@ class NetworkController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreNetworkRequest $request)
+    public function store(Request $request)
     {
         $request->validate([
             'description' => 'required|string',
