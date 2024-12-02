@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNetworkRequest;
 use App\Http\Requests\UpdateNetworkRequest;
 use App\Models\Network;
+use Request;
 
 class NetworkController extends Controller
 {
@@ -47,9 +48,14 @@ class NetworkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateNetworkRequest $request, Network $network)
+    public function update(Request $request, Network $network)
     {
-        //
+
+        $network->update([
+            'is_approved' => 1,
+        ]);
+
+        return response()->json(['message' => 'Network updated successfully.'], 200);
     }
 
     /**
