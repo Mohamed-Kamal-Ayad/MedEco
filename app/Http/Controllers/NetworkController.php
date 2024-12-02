@@ -14,7 +14,10 @@ class NetworkController extends Controller
      */
     public function index()
     {
-        $reqs = Network::where('receiver_id', null)->where('is_approved', false)->get();
+        $reqs = Network::query()->where('receiver_id', null)
+            ->where('is_approved', false)
+            ->whereRelation('sender.pharmacy', 'user_id', '!=', auth()->id())
+            ->get();
         $res = $reqs?->map(function ($req) {
             return [
                 'id' => $req->id,
