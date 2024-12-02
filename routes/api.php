@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NetworkController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\User\DrugTypeController;
@@ -68,6 +69,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/orders/{order}', [PharmacyOrderController::class, 'getOrderById']); // Get order by ID
         Route::patch('/orders/{order}', [PharmacyOrderController::class, 'markOrderAsCompleted']); // Mark order as completed
         Route::delete('/orders/{order}', [PharmacyOrderController::class, 'cancelOrder']); // Cancel order
+
+        Route::get('network', [NetworkController::class, 'index']);
+        Route::get('network/{id}', [NetworkController::class, 'update']);
+        Route::post('requests', [NetworkController::class, 'store']);
+
     });
 });
 Route::post('/editor/upload', 'MediaController@editorUpload')->name('editor.upload');
