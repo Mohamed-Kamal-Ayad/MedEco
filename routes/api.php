@@ -71,7 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/orders/{order}', [PharmacyOrderController::class, 'cancelOrder']); // Cancel order
 
         Route::get('network', [NetworkController::class, 'index']);
-        Route::get('network/{id}', [NetworkController::class, 'update']);
+        Route::get('network/{id}/accept', [NetworkController::class, 'update']);
         Route::post('requests', [NetworkController::class, 'store']);
 
     });

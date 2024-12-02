@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreNetworkRequest;
 use App\Http\Requests\UpdateNetworkRequest;
+use App\Http\Resources\PharmacyBranchResource;
+use App\Http\Resources\PharmacyResource;
 use App\Models\Network;
 use Request;
 
@@ -14,7 +16,18 @@ class NetworkController extends Controller
      */
     public function index()
     {
-        //
+        $reqs = Network::where('receiver_id', null)->where('is_approved', false)->get();
+        $res = $reqs?->map(function ($req) {
+            return [
+                'id' => $req->id,
+                'description' => $req->description,
+                'sender' => [
+                    'pharmacy' => PharmacyResource::make($req->sender->pharmacy),
+                    'pharmacy_branch' => PharmacyBranchResource::make($req->sender),
+                ]
+            ];
+        });
+        return response()->json([['']];
     }
 
     /**
