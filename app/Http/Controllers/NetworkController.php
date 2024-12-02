@@ -61,7 +61,6 @@ class NetworkController extends Controller
      */
     public function update(Request $request, Network $network)
     {
-
         $network->update([
             'is_approved' => 1,
         ]);
