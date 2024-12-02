@@ -67,7 +67,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::get('/orders', [PharmacyOrderController::class, 'getAllOrders']); // Get all orders
         Route::get('/orders/{order}', [PharmacyOrderController::class, 'getOrderById']); // Get order by ID
-        Route::patch('/orders/{order}', [PharmacyOrderController::class, 'markOrderAsCompleted']); // Mark order as completed
+        Route::post('/orders/{order}', [PharmacyOrderController::class, 'markOrderAsCompleted']); // Mark order as completed
         Route::delete('/orders/{order}', [PharmacyOrderController::class, 'cancelOrder']); // Cancel order
 
         Route::get('network', [NetworkController::class, 'index']);
