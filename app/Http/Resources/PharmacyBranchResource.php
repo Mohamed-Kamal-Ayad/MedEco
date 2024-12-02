@@ -16,7 +16,7 @@ class PharmacyBranchResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name' => $this->pharmacy->name,
             'address' => $this->address,
             'phone' => $this->phone,
             'latitude' => $this->latitude,
