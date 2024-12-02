@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
         Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
         Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
-        Route::get('points', function (){
+        Route::get('points', function () {
             return response()->json(['points' => auth()->user()?->points]);
         });
     });
@@ -71,7 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/orders/{order}', [PharmacyOrderController::class, 'cancelOrder']); // Cancel order
 
         Route::get('network', [NetworkController::class, 'index']);
-        Route::get('network/{id}/accept', [NetworkController::class, 'update']);
+        Route::put('network/{id}/accept', [NetworkController::class, 'update']);
         Route::post('requests', [NetworkController::class, 'store']);
 
     });
