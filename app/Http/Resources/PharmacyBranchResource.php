@@ -19,8 +19,8 @@ class PharmacyBranchResource extends JsonResource
             'name' => $this->pharmacy->name,
             'address' => $this->address,
             'phone' => $this->phone,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
+            'lat' => $this->lat,
+            'lng' => $this->lng,
         ];
     }
 }
