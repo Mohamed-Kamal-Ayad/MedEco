@@ -31,6 +31,53 @@ class NetworkController extends Controller
         return response()->json($res);
     }
 
+    public function getMyRequests()
+    {
+        $reqs = Network::query()
+            ->whereRelation('sender.pharmacy', 'user_id', auth()->id())
+            ->get();
+        $res = $reqs?->map(function ($req) {
+            if ($req->is_approved) {
+                return [
+                    'id' => $req->id,
+                    'description' => $req->description,
+                    'is_approved' => $req->is_approved,
+                    'receiver' => [
+                        'pharmacy' => PharmacyResource::make($req->receiver->pharmacy),
+                        'pharmacy_branch' => PharmacyBranchResource::make($req->receiver),
+                    ]
+                ];
+            } else {
+                return [
+                    'id' => $req->id,
+                    'description' => $req->description,
+                    'is_approved' => $req->is_approved,
+                ];
+            }
+        });
+        return response()->json($res);
+    }
+    public function getMyApprovedRequests()
+    {
+        $reqs = Network::query()
+            ->whereRelation('receiver.pharmacy', 'user_id', auth()->id())
+            ->where('is_approved', true)
+            ->get();
+        $res = $reqs?->map(function ($req) {
+            return [
+                'id' => $req->id,
+                'description' => $req->description,
+                'is_approved' => $req->is_approved,
+                'sender' => [
+                    'pharmacy' => PharmacyResource::make($req->sender->pharmacy),
+                    'pharmacy_branch' => PharmacyBranchResource::make($req->sender),
+                ]
+            ];
+        });
+        return response()->json($res);
+    }
+
+
     /**
      * Store a newly created resource in storage.
      */
@@ -64,8 +111,12 @@ class NetworkController extends Controller
      */
     public function update(Request $request, Network $network)
     {
+        $request->validate([
+            'pharmacy_branch_id' => 'required|exists:pharmacy_branches,id',
+        ]);
         $network->update([
             'is_approved' => 1,
+            'receiver_id' => $request->pharmacy_branch_id,
         ]);
 
         return response()->json(['message' => 'Network updated successfully.'], 200);

@@ -73,7 +73,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('network', [NetworkController::class, 'index']);
         Route::put('network/{network}/accept', [NetworkController::class, 'update']);
         Route::post('requests', [NetworkController::class, 'store']);
-
+        Route::get('my-requests', [NetworkController::class, 'getMyRequests']);
+        Route::get('approved-requests', [NetworkController::class, 'getMyApprovedRequests']);
     });
 });
 Route::post('/editor/upload', 'MediaController@editorUpload')->name('editor.upload');
