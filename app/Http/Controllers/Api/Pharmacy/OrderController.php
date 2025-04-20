@@ -39,13 +39,9 @@ class OrderController extends Controller
             return response()->json(['message' => 'Order not found'], 404);
         }
 
-        $validated = $request->validate([
-            'is_completed' => 'required|boolean',
-            'notes' => 'nullable|string',
-        ]);
 
         $order->update([
-            'is_completed' => $validated['is_completed'],
+            'is_completed' => 1,
             'notes' => $validated['notes'] ?? $order->notes,
         ]);
 
