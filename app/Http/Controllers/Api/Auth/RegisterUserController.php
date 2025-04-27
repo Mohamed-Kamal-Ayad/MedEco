@@ -20,20 +20,16 @@ class RegisterUserController extends Controller
     public function register(RegisterUserRequest $request): JsonResponse
     {
         $validatedData = $request->validated();
-        // Hash password
         $validatedData['password'] = Hash::make($validatedData['password']);
 
-        // Create the user
         $user = User::create($validatedData);
 
-        // If the type is 'pharmacy', create the related pharmacy record
         if ($validatedData['type'] === 'pharmacy') {
             $this->registerPharmacy($request, $user);
         }
 
         $token = $user->createToken('user', ['app:all'])->plainTextToken;
 
-        // Login the user after registration
         Auth::login($user);
 
         if ($validatedData['type'] === 'pharmacy') {

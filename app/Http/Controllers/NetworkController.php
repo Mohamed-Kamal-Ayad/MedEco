@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 
 class NetworkController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $reqs = Network::query()->where('receiver_id', null)
@@ -35,6 +33,9 @@ class NetworkController extends Controller
     {
         $reqs = Network::query()
             ->whereRelation('sender.pharmacy', 'user_id', auth()->id())
+            ->when(request('is_approved'), function ($query) {
+                $query->where('is_approved', request('is_approved'));
+            })
             ->get();
         $res = $reqs?->map(function ($req) {
             if ($req->is_approved) {
@@ -78,9 +79,6 @@ class NetworkController extends Controller
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -98,17 +96,12 @@ class NetworkController extends Controller
         return response()->json(['message' => 'Network created successfully.'], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Network $network)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Network $network)
     {
         $request->validate([
@@ -122,9 +115,6 @@ class NetworkController extends Controller
         return response()->json(['message' => 'Network updated successfully.'], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Network $network)
     {
         //
