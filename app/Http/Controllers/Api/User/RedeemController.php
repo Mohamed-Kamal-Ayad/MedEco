@@ -43,7 +43,7 @@ class RedeemController extends Controller
         ]);
 
         $redeem = $user->redeems()->create($request->all());
-
+        dd($redeem);
         return new RedeemResource($redeem);
     }
 }
