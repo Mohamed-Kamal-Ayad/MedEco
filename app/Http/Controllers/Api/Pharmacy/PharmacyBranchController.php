@@ -15,6 +15,7 @@ class PharmacyBranchController extends Controller
     {
 
         $branches = PharmacyBranch::query()
+            ->with('pharmacy')
             ->when($request->has('is_accept_expired') && $request->is_accept_expired == 'true', function ($query) use ($request) {
                 $query->whereHas('pharmacy', function ($query) use ($request) {
                     $query->where('is_accept_expired', $request->is_accept_expired);
@@ -31,9 +32,7 @@ class PharmacyBranchController extends Controller
         ]);
     }
 
-    public function show()
-    {
-    }
+    public function show() {}
 
     public function store(BranchRequest $request): JsonResponse
     {

@@ -19,7 +19,6 @@ class PharmacyController extends Controller
     public function index(Request $request): JsonResponse
     {
         $branches = PharmacyBranch::query()
-            ->with('pharmacy')
             ->when($request->has('is_accept_expired') && $request->is_accept_expired == 'true', function ($query) use ($request) {
                 $query->whereHas('pharmacy', function ($query) use ($request) {
                     $query->where('is_accept_expired', $request->is_accept_expired);
