@@ -33,6 +33,13 @@ class RedeemController extends Controller
         $request->validate([
             'pharmacy_id' => 'required|exists:pharmacies,id',
             'points' => 'required|integer|min:1|max:' . $user->points,
+        ], [
+            'pharmacy_id.required' => 'The pharmacy ID is required.',
+            'pharmacy_id.exists' => 'The selected pharmacy does not exist.',
+            'points.required' => 'The points are required.',
+            'points.integer' => 'The points must be an integer.',
+            'points.min' => 'The points must be at least 1.',
+            'points.max' => 'The points may not be greater than your available points.',
         ]);
 
         $redeem = $user->redeems()->create($request->all());
