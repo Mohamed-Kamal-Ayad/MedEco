@@ -17,6 +17,8 @@ class Redeem extends Model
 
     protected $casts = [
         'is_approved' => 'boolean',
+        'points' => 'integer',
+        'pharmacy_id' => 'integer',
     ];
 
     public function user()
