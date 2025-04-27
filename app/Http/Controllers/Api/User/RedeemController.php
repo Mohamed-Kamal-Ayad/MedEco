@@ -29,7 +29,7 @@ class RedeemController extends Controller
     public function store(Request $request)
     {
         $user = $request->user();
-        dd(auth()->user()?->points);
+        dd($user);
 
         $request->validate([
             'pharmacy_id' => 'required|exists:pharmacies,id',
