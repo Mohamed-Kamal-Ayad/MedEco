@@ -47,8 +47,8 @@ class RedeemController extends Controller
             'user_id' => $user->id,
             'pharmacy_id' => $request->pharmacy_id,
             'points' => $request->points,
+            'is_approved' => false,
         ]);
-        dd($redeem);
         return new RedeemResource($redeem);
     }
 }
