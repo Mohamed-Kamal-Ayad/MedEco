@@ -16,7 +16,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = auth()->user()->orders()->with(['drug.pharmacyBranch.pharmacy'])->get();
+        $orders = auth()->user()->orders()->with(['drug.pharmacyBranch.pharmacy', 'pharmacyBranch.pharmacy'])->get();
         return OrderResource::collection($orders);
     }
 

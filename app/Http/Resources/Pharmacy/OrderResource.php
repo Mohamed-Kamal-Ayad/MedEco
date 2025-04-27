@@ -25,7 +25,6 @@ class OrderResource extends JsonResource
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'user' => UserResource::make($this->user),
             'points_earned' => $this->total,
-            'pharmacy' => PharmacyResource::make($this->pharmacyBranch->pharmacy),
         ];
     }
 }
