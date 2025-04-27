@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\User\RedeemController as UserRedeemController;
+use App\Http\Controllers\Api\Pharmacy\RedeemController as PharmacyRedeemController;
+
 use App\Http\Controllers\NetworkController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -54,6 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('points', function () {
             return response()->json(['points' => auth()->user()?->points]);
         });
+        Route::apiResource('redeems', UserRedeemController::class)->only(['index', 'show', 'store']);
     });
     Route::as('pharmacy.')->prefix('pharmacy')->group(function () {
         Route::get('drug-types', [DrugTypeController::class, 'index'])->name('drugs.types');
@@ -75,6 +79,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('requests', [NetworkController::class, 'store']);
         Route::get('my-requests', [NetworkController::class, 'getMyRequests']);
         Route::get('approved-requests', [NetworkController::class, 'getMyApprovedRequests']);
+        Route::get('points', function () {
+            return response()->json(['points' => auth()->user()?->points]);
+        });
+        Route::apiResource('redeems', PharmacyRedeemController::class)->only(['index', 'show', 'update']);
     });
 });
 Route::post('/editor/upload', 'MediaController@editorUpload')->name('editor.upload');

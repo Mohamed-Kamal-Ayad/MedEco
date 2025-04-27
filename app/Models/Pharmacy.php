@@ -67,15 +67,26 @@ class Pharmacy extends Model implements HasMedia
     {
         return $this->hasMany(PharmacyBranch::class);
     }
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('logo')
             ->singleFile();
     }
 
+    public function redeems()
+    {
+        return $this->hasMany(Redeem::class);
+    }
+
+    public function getPointsAttribute()
+    {
+        return $this->redeems()->where('is_approved', true)->sum('points');
+    }
+
 }
 
 
-    
+
 
 

@@ -317,6 +317,13 @@ class User extends Authenticatable implements HasMedia, NotificationTarget
                 return $item->quantity * $item->drug->points;
             });
         });
+
+        $p = $p - $this->redeems->where('is_approved', 1)->sum('points');
         return $p;
+    }
+
+    public function redeems()
+    {
+        return $this->hasMany(Redeem::class);
     }
 }
