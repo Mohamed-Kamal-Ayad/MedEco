@@ -80,7 +80,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('my-requests', [NetworkController::class, 'getMyRequests']);
         Route::get('approved-requests', [NetworkController::class, 'getMyApprovedRequests']);
         Route::get('points', function () {
-            return response()->json(['points' => auth()->user()->pharmacy->points]);
+            return response()->json(['points' => (int)auth()->user()->pharmacy->points]);
         });
         Route::apiResource('redeems', PharmacyRedeemController::class)->only(['index', 'show', 'update']);
     });
