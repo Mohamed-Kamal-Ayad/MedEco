@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Pharmacy;
 
+use App\Http\Resources\PharmacyBranchResource;
+use App\Models\PharmacyBranch;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\PharmacyResource;
@@ -25,6 +27,7 @@ class OrderResource extends JsonResource
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'user' => UserResource::make($this->user),
             'points_earned' => $this->total,
+            'pharmacy' => PharmacyBranchResource::make($this->pharmacyBranch),
         ];
     }
 }

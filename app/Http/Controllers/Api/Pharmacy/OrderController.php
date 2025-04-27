@@ -15,7 +15,7 @@ class OrderController extends Controller
      */
     public function getAllOrders()
     {
-        $orders = Order::query()->whereRelation('pharmacyBranch.pharmacy', 'user_id', auth()->id())->with('items')->get();
+        $orders = Order::query()->whereRelation('pharmacyBranch.pharmacy', 'user_id', auth()->id())->with('items')->with('pharmacyBranch')->get();
         return OrderResource::collection($orders);
     }
 
