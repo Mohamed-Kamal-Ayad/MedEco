@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\User\RedeemResource;
+use App\Models\Redeem;
 use Illuminate\Http\Request;
 
 class RedeemController extends Controller
@@ -42,7 +43,12 @@ class RedeemController extends Controller
             'points.max' => 'The points may not be greater than your available points.',
         ]);
 
-        $redeem = $user->redeems()->create($request->all());
+        $redeem = Redeem::create([
+            'user_id' => $user->id,
+            'pharmacy_id' => $request->pharmacy_id,
+            'points' => $request->points,
+            'is_approved' => false,
+        ]);
         dd($redeem);
         return new RedeemResource($redeem);
     }
