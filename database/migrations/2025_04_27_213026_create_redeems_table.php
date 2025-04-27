@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('pharmacy_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->integer('points')->default(0);
-            $table->boolean('is_approved')->default(false);
+            $table->boolean('is_approved')->default(0);
             $table->timestamps();
         });
     }
