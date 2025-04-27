@@ -16,7 +16,7 @@ class RedeemController extends Controller
         // Assuming you have a relationship set up in the Pharmacy model
         $redeems = $pharmacy->redeems()->with('user')->get();
 
-        return response()->json($redeems);
+        return response()->json(['data' => $redeems]);
     }
 
     public function show(Request $request, $id)
