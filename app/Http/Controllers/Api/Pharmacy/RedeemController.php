@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Pharmacy;
 
 use App\Http\Controllers\Controller;
+use App\Models\Redeem;
 use Illuminate\Http\Request;
 
 class RedeemController extends Controller
@@ -36,13 +37,14 @@ class RedeemController extends Controller
         $pharmacy = $request->user()->pharmacy;
 
         // Assuming you have a relationship set up in the Pharmacy model
-        $redeem = $pharmacy->redeems()->findOrFail($id);
+        $redeem = Redeem::findOrFail($id);
 
         if ($redeem->user->points < $redeem->points) {
             return response()->json(['error' => 'The user does not have enough points.'], 422);
         }
 
         $redeem->update([
+            'pharmacy_id' => $pharmacy->id,
             'is_approved' => true,
         ]);
 

@@ -16,7 +16,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = auth()->user()->orders()->with(['drug.pharmacyBranch.pharmacy', 'pharmacyBranch.pharmacy'])->get();
+        $orders = auth()->user()->orders()->when(request()->has('is_completed'), function ($query) {
+            $query->where('is_completed', request()->is_completed);
+        })->with(['drug.pharmacyBranch.pharmacy', 'pharmacyBranch.pharmacy'])->get();
         return OrderResource::collection($orders);
     }
 
