@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api\Pharmacy;
 
 use App\Models\Pharmacy;
-use Illuminate\Http\Request;
-use App\Models\PharmacyBranch;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PharmacyResource;
@@ -16,21 +14,11 @@ class PharmacyController extends Controller
      *
      * @return JsonResponse
      */
-    public function index(Request $request): JsonResponse
+    public function index(): JsonResponse
     {
-        $branches = PharmacyBranch::query()
-            ->when($request->has('is_accept_expired') && $request->is_accept_expired == 'true', function ($query) use ($request) {
-                $query->whereHas('pharmacy', function ($query) use ($request) {
-                    $query->where('is_accept_expired', $request->is_accept_expired);
-                });
-            })
-            ->when($request->has('my_branches') && $request->my_branches == 'true', function ($query) {
-                $query->where('pharmacy_id', auth()->user()->pharmacy->id);
-            })
-            ->get();
-
+        $pharmacies = Pharmacy::with('branches')->get();
         return response()->json([
-            'data' => $branches,
+            'data' => PharmacyResource::collection($pharmacies)
         ]);
     }
 
