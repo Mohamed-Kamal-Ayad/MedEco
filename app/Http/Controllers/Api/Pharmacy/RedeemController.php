@@ -37,6 +37,9 @@ class RedeemController extends Controller
 
         // Assuming you have a relationship set up in the Pharmacy model
         $redeem = Redeem::findOrFail($id);
+        if ($redeem->pharmacy_id) {
+            return response()->json(['error' => 'The redemption has already been approved.'], 422);
+        }
 
         if ($redeem->user->points < $redeem->points) {
             return response()->json(['error' => 'The user does not have enough points.'], 422);
