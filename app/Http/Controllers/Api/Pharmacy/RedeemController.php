@@ -52,6 +52,6 @@ class RedeemController extends Controller
             'is_approved' => true,
         ]);
 
-        return response()->json($redeem);
+        return response()->json(['message' => 'Redemption approved successfully.']);
     }
 }
