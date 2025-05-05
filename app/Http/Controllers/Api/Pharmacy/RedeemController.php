@@ -22,7 +22,9 @@ class RedeemController extends Controller
 
     public function show(Request $request, $id)
     {
-        $redeem = Redeem::where('is_approved', false)->orWhere('pharmacy_id', $request->user()->pharmacy->id)->findOrFail($id);
+        $redeem = Redeem::where('is_approved', false)
+            ->orWhere('pharmacy_id', $request->user()->pharmacy->id)
+            ->findOrFail($id);
 
 
         return response()->json($redeem);
