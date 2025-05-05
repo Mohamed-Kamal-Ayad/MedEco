@@ -22,11 +22,8 @@ class RedeemController extends Controller
 
     public function show(Request $request, $id)
     {
-        // Implement the logic to retrieve and return a specific redemption by ID for the pharmacy
-        $pharmacy = $request->user()->pharmacy;
+        $redeem = Redeem::where('is_approved', false)->orWhere('pharmacy_id', $request->user()->pharmacy->id)->findOrFail($id);
 
-        // Assuming you have a relationship set up in the Pharmacy model
-        $redeem = $pharmacy->redeems()->with('user')->findOrFail($id);
 
         return response()->json($redeem);
     }
