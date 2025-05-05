@@ -22,10 +22,11 @@ class RedeemController extends Controller
 
     public function show(Request $request, $id)
     {
-        $redeem = Redeem::where('is_approved', false)
+        $redeem = Redeem::where('id', $id)
+            ->where('is_approved', false)
             ->orWhere('pharmacy_id', $request->user()->pharmacy->id)
             ->with('user')
-            ->findOrFail($id);
+            ->firstOrFail();
 
 
         return response()->json($redeem);
@@ -38,6 +39,7 @@ class RedeemController extends Controller
 
         // Assuming you have a relationship set up in the Pharmacy model
         $redeem = Redeem::findOrFail($id);
+
         if ($redeem->pharmacy_id) {
             return response()->json(['error' => 'The redemption has already been approved.'], 422);
         }
