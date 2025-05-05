@@ -24,6 +24,7 @@ class RedeemController extends Controller
     {
         $redeem = Redeem::where('is_approved', false)
             ->orWhere('pharmacy_id', $request->user()->pharmacy->id)
+            ->with('user')
             ->findOrFail($id);
 
 
