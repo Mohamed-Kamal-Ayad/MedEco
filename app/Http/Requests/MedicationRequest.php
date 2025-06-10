@@ -31,20 +31,30 @@ class MedicationRequest extends FormRequest
                 'frequency_type' => 'required|in:daily,weekly,monthly,every_x_days',
                 'frequency_count' => 'required|integer|min:1',
                 'specific_times' => [
-                    Rule::requiredIf(fn() => $this->frequency_type === 'daily'),
+                    'required_if:frequency_type,daily',
                     'array',
-                    'min:1',
+                    'exclude_if:frequency_type,weekly,monthly,every_x_days',
+                    function ($attribute, $value, $fail) {
+                        if ($this->input('frequency_type') === 'daily' && count($value) < 1) {
+                            $fail('At least one specific time must be provided for daily medications.');
+                        }
+                    },
                 ],
                 'specific_times.*' => 'string|date_format:H:i',
                 'specific_days' => [
-                    Rule::requiredIf(fn() => in_array($this->frequency_type, ['weekly', 'monthly'])),
+                    'required_if:frequency_type,weekly,monthly',
                     'array',
-                    'min:1',
+                    'exclude_if:frequency_type,daily,every_x_days',
+                    function ($attribute, $value, $fail) {
+                        if (in_array($this->input('frequency_type'), ['weekly', 'monthly']) && count($value) < 1) {
+                            $fail('At least one specific day must be provided for weekly or monthly medications.');
+                        }
+                    },
                 ],
 
                 'duration_type' => 'required|in:days,weeks,months,indefinite',
                 'duration_value' => [
-                    Rule::requiredIf(fn() => $this->duration_type !== 'indefinite'),
+                    'required_if:duration_type,days,weeks,months',
                     'nullable',
                     'integer',
                     'min:1',
@@ -59,29 +69,42 @@ class MedicationRequest extends FormRequest
             'frequency_type' => 'sometimes|in:daily,weekly,monthly,every_x_days',
             'frequency_count' => 'sometimes|integer|min:1',
             'specific_times' => [
-                Rule::requiredIf(fn() => $this->has('frequency_type') && $this->frequency_type === 'daily'),
                 'sometimes',
+                'required_if:frequency_type,daily',
                 'array',
-                'min:1',
+                'exclude_if:frequency_type,weekly,monthly,every_x_days',
+                function ($attribute, $value, $fail) {
+                    if ($this->has('frequency_type') && $this->input('frequency_type') === 'daily' && count($value) < 1) {
+                        $fail('At least one specific time must be provided for daily medications.');
+                    }
+                },
             ],
             'specific_times.*' => 'string|date_format:H:i',
             'specific_days' => [
-                Rule::requiredIf(fn() => $this->has('frequency_type') && in_array($this->frequency_type, ['weekly', 'monthly'])),
                 'sometimes',
+                'required_if:frequency_type,weekly,monthly',
                 'array',
-                'min:1',
+                'exclude_if:frequency_type,daily,every_x_days',
+                function ($attribute, $value, $fail) {
+                    if ($this->has('frequency_type') && in_array($this->input('frequency_type'), ['weekly', 'monthly']) && count($value) < 1) {
+                        $fail('At least one specific day must be provided for weekly or monthly medications.');
+                    }
+                },
             ],
 
             'duration_type' => 'sometimes|in:days,weeks,months,indefinite',
             'duration_value' => [
-                Rule::requiredIf(fn() => $this->has('duration_type') && $this->duration_type !== 'indefinite'),
-                'nullable',
                 'sometimes',
+                'required_if:duration_type,days,weeks,months',
+                'nullable',
                 'integer',
                 'min:1',
             ],
         ];
     }
+
+
+
 
 
     /**
