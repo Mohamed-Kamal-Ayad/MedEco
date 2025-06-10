@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Prescription;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PrescriptionRequest;
 use App\Http\Resources\PrescriptionResource;
-use App\Models\Prescription;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PrescriptionController extends Controller
 {
@@ -66,12 +68,22 @@ class PrescriptionController extends Controller
         return new PrescriptionResource($prescription);
     }
 
-    public function destroy(Prescription $prescription): Response
+    public function destroy(int $id): JsonResponse
     {
+        $prescription = Prescription::find($id);
+
+        if (! $prescription) {
+            return response()->json([
+                'message' => 'Prescription not found',
+            ], 404);
+        }
+
         $this->authorize('delete', $prescription);
 
         $prescription->delete();
 
-        return response()->noContent();
+        return response()->json([
+            'message' => 'Prescription deleted successfully',
+        ], 200);
     }
 }

@@ -120,10 +120,10 @@ class User extends Authenticatable implements HasMedia, NotificationTarget
         return $this->hasOne(Pharmacy::class);
     }
 
-    public function Branch()
-    {
-        return $this->hasMany(Branch::class);
-    }
+    // public function Branch()
+    // {
+    //     return $this->hasMany(Branch::class);
+    // }
 
     public function dashboardProfile(): string
     {

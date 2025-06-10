@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class MedicationRequest extends FormRequest
 {
@@ -17,35 +18,97 @@ class MedicationRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
     public function rules(): array
     {
-        $rules = [
-            'medicine_name' => 'required|string|max:255',
-            'dosage' => 'required|string|max:255',
-            'frequency_type' => 'required|in:daily,weekly,monthly,every_x_days',
-            'frequency_count' => 'required|integer|min:1',
-            'duration_type' => 'required|in:days,weeks,months,indefinite',
-            'start_date' => 'required|date',
+        if ($this->isMethod('post')) {
+            return [
+                'medicine_name' => 'required|string|max:255',
+                'dosage' => 'required|string|max:255',
+                'start_date' => 'required|date',
+
+                'frequency_type' => 'required|in:daily,weekly,monthly,every_x_days',
+                'frequency_count' => 'required|integer|min:1',
+                'specific_times' => [
+                    Rule::requiredIf(fn() => $this->frequency_type === 'daily'),
+                    'array',
+                    'min:1',
+                ],
+                'specific_times.*' => 'string|date_format:H:i',
+                'specific_days' => [
+                    Rule::requiredIf(fn() => in_array($this->frequency_type, ['weekly', 'monthly'])),
+                    'array',
+                    'min:1',
+                ],
+
+                'duration_type' => 'required|in:days,weeks,months,indefinite',
+                'duration_value' => [
+                    Rule::requiredIf(fn() => $this->duration_type !== 'indefinite'),
+                    'nullable',
+                    'integer',
+                    'min:1',
+                ],
+            ];
+        }
+
+        return [
+            'medicine_name' => 'sometimes|string|max:255',
+            'dosage' => 'sometimes|string|max:255',
+            'start_date' => 'sometimes|date',
+            'frequency_type' => 'sometimes|in:daily,weekly,monthly,every_x_days',
+            'frequency_count' => 'sometimes|integer|min:1',
+            'specific_times' => [
+                Rule::requiredIf(fn() => $this->has('frequency_type') && $this->frequency_type === 'daily'),
+                'sometimes',
+                'array',
+                'min:1',
+            ],
+            'specific_times.*' => 'string|date_format:H:i',
+            'specific_days' => [
+                Rule::requiredIf(fn() => $this->has('frequency_type') && in_array($this->frequency_type, ['weekly', 'monthly'])),
+                'sometimes',
+                'array',
+                'min:1',
+            ],
+
+            'duration_type' => 'sometimes|in:days,weeks,months,indefinite',
+            'duration_value' => [
+                Rule::requiredIf(fn() => $this->has('duration_type') && $this->duration_type !== 'indefinite'),
+                'nullable',
+                'sometimes',
+                'integer',
+                'min:1',
+            ],
         ];
+    }
 
-        // Conditional validation rules
-        if ($this->input('frequency_type') === 'daily') {
-            $rules['specific_times'] = 'required|array|min:1';
-            $rules['specific_times.*'] = 'string|date_format:H:i';
-        }
 
-        if (in_array($this->input('frequency_type'), ['weekly', 'monthly'])) {
-            $rules['specific_days'] = 'required|array|min:1';
-        }
-
-        if ($this->input('duration_type') !== 'indefinite') {
-            $rules['duration_value'] = 'required|integer|min:1';
-        } else {
-            $rules['duration_value'] = 'nullable';
-        }
-
-        return $rules;
+    /**
+     * Get custom error messages for validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'medicine_name.required' => 'The medicine name field is required.',
+            'dosage.required' => 'The dosage field is required.',
+            'frequency_type.required' => 'The frequency type field is required.',
+            'frequency_type.in' => 'The frequency type must be one of: daily, weekly, monthly, or every_x_days.',
+            'frequency_count.required' => 'The frequency count field is required.',
+            'frequency_count.min' => 'The frequency count must be at least 1.',
+            'specific_times.required_if' => 'The specific times are required for daily medications.',
+            'specific_times.min' => 'At least one specific time must be provided for daily medications.',
+            'specific_times.*.date_format' => 'Each specific time must be in the format HH:MM.',
+            'specific_days.required_if' => 'The specific days are required for weekly or monthly medications.',
+            'specific_days.min' => 'At least one specific day must be provided for weekly or monthly medications.',
+            'duration_type.required' => 'The duration type field is required.',
+            'duration_type.in' => 'The duration type must be one of: days, weeks, months, or indefinite.',
+            'duration_value.required_if' => 'The duration value is required unless the duration type is indefinite.',
+            'duration_value.min' => 'The duration value must be at least 1.',
+            'start_date.required' => 'The start date field is required.',
+            'start_date.date' => 'The start date must be a valid date.',
+        ];
     }
 }
