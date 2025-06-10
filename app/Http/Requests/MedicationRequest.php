@@ -29,23 +29,23 @@ class MedicationRequest extends FormRequest
             'duration_type' => 'required|in:days,weeks,months,indefinite',
             'start_date' => 'required|date',
         ];
-        
+
         // Conditional validation rules
         if ($this->input('frequency_type') === 'daily') {
             $rules['specific_times'] = 'required|array|min:1';
             $rules['specific_times.*'] = 'string|date_format:H:i';
         }
-        
+
         if (in_array($this->input('frequency_type'), ['weekly', 'monthly'])) {
             $rules['specific_days'] = 'required|array|min:1';
         }
-        
+
         if ($this->input('duration_type') !== 'indefinite') {
             $rules['duration_value'] = 'required|integer|min:1';
         } else {
             $rules['duration_value'] = 'nullable';
         }
-        
+
         return $rules;
     }
 }
