@@ -1,24 +1,27 @@
 <?php
 
-use App\Http\Controllers\Api\User\RedeemController as UserRedeemController;
-use App\Http\Controllers\Api\Pharmacy\RedeemController as PharmacyRedeemController;
+use App\Models\Order;
+use App\Models\Medication;
 
-use App\Http\Controllers\NetworkController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Auth\LoginController;
-use App\Http\Controllers\Api\User\DrugTypeController;
+use App\Http\Controllers\NetworkController;
 use App\Http\Controllers\Api\User\DrugController;
-use App\Http\Controllers\Api\Pharmacy\DrugController as PharmacyDrugController;
-
+use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\MedicationController;
 use App\Http\Controllers\Api\User\OrderController;
 
-use App\Http\Controllers\Api\Pharmacy\OrderController as PharmacyOrderController;
+use App\Http\Controllers\Api\PrescriptionController;
+
+use App\Http\Controllers\Api\User\DrugTypeController;
 
 
 use App\Http\Controllers\Api\Auth\RegisterUserController;
 use App\Http\Controllers\Api\Pharmacy\PharmacyController;
 use App\Http\Controllers\Api\Pharmacy\PharmacyBranchController;
-use App\Models\Order;
+use App\Http\Controllers\Api\User\RedeemController as UserRedeemController;
+use App\Http\Controllers\Api\Pharmacy\DrugController as PharmacyDrugController;
+use App\Http\Controllers\Api\Pharmacy\OrderController as PharmacyOrderController;
+use App\Http\Controllers\Api\Pharmacy\RedeemController as PharmacyRedeemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +45,10 @@ Route::post('/password/reset', 'ResetPasswordController@reset')->name('password.
 Route::get('/select/users', 'UserController@select')->name('users.select');
 
 Route::middleware('auth:sanctum')->group(function () {
+    // Existing routes...
+
+    // Prescription routes
+
     Route::post('password', 'VerificationController@password')->name('password.check');
     Route::post('verification/send', 'VerificationController@send')->name('verification.send');
     Route::post('verification/verify', 'VerificationController@verify')->name('verification.verify');
@@ -58,6 +65,10 @@ Route::middleware('auth:sanctum')->group(function () {
             return response()->json(['points' => auth()->user()?->points]);
         });
         Route::apiResource('redeems', UserRedeemController::class)->only(['index', 'show', 'store']);
+        Route::apiResource('prescriptions', PrescriptionController::class)->except(['update', 'destroy']);
+        Route::post('prescriptions/{prescription}/medications', [MedicationController::class, 'store'])
+            ->name('prescriptions.medications.store');
+        Route::apiResource('medications', MedicationController::class)->only(['update', 'destroy']);
     });
     Route::as('pharmacy.')->prefix('pharmacy')->group(function () {
         Route::get('drug-types', [DrugTypeController::class, 'index'])->name('drugs.types');
