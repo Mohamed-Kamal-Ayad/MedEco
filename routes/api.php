@@ -65,7 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
             return response()->json(['points' => auth()->user()?->points]);
         });
         Route::apiResource('redeems', UserRedeemController::class)->only(['index', 'show', 'store']);
-        Route::apiResource('prescriptions', PrescriptionController::class)->except(['update', 'destroy']);
+        Route::apiResource('prescriptions', PrescriptionController::class);
         Route::post('prescriptions/{prescription}/medications', [MedicationController::class, 'store'])
             ->name('prescriptions.medications.store');
         Route::apiResource('medications', MedicationController::class)->only(['update', 'destroy']);

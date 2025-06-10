@@ -61,7 +61,6 @@ class PrescriptionController extends Controller
     public function update(PrescriptionRequest $request, Prescription $prescription): PrescriptionResource
     {
         $this->authorize('update', $prescription);
-
         $prescription->update($request->validated());
 
         return new PrescriptionResource($prescription);
